@@ -257,6 +257,12 @@ footer {
   font-size: 0.9rem;
 }
 
+@media (max-width: 600px) {
+  body {
+    background: none;
+  }
+}
+
 @media (max-width: 390px) {
   .hero-content h1 {
     font-size: 1.2rem;
