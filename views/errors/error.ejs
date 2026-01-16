@@ -1,0 +1,20 @@
+<!-- Error Page Title -->
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <% } else { res.redirect('/') } %>
+
+        <!-- Error Message Display -->
+        <div class="error-container">
+            <div class="error-message">
+                <%- message %>
+            </div>
+
+            <!-- Friendly Error Image/Text -->
+            <div class="error-humor">
+                <p>🚗💨 Oops! Looks like this page took a detour and got lost in the parking lot!</p>
+                <p>Don't worry, even our best vehicles sometimes need a GPS. Let's get you back on the road!</p>
+                <a href="/" class="btn-home">Take Me Home</a>
+            </div>
+        </div>
