@@ -85,6 +85,24 @@ nav li:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+nav a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  /* makes the whole li area clickable */
+  width: 100%;
+}
+
+nav a:hover,
+nav a:focus,
+nav a:active {
+  color: #ddd;
+}
+
+nav a:visited {
+  color: #fff;
+}
+
 main {
   padding: 0;
 }
@@ -109,7 +127,7 @@ main {
   max-width: 800px;
 }
 
-.vehicle-info {
+.featured-vehicle .vehicle-info {
   position: absolute;
   left: 10px;
   top: 50%;
@@ -121,7 +139,7 @@ main {
   max-width: 250px;
 }
 
-.vehicle-info h2 {
+.featured-vehicle .vehicle-info h2 {
   color: #006064;
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
@@ -154,14 +172,14 @@ main {
   background-color: #004d50;
 }
 
-.vehicle-image {
+.featured-vehicle .vehicle-image {
   position: relative;
   z-index: 1;
   width: 100%;
   max-width: 600px;
 }
 
-.vehicle-image img {
+.featured-vehicle .vehicle-image img {
   width: 100%;
   height: auto;
   border-radius: 8px;
@@ -260,6 +278,32 @@ footer {
 @media (max-width: 600px) {
   body {
     background: none;
+  }
+
+  /* Fix mobile layout for featured vehicle */
+  .hero-content h1 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-vehicle {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .featured-vehicle .vehicle-info {
+    position: static;
+    transform: none;
+    max-width: 100%;
+    margin: 0;
+    padding: 1rem;
+    order: 1;
+  }
+
+  .featured-vehicle .vehicle-image {
+    order: 2;
+    max-width: 90%;
   }
 }
 
@@ -512,6 +556,254 @@ footer {
   }
 
   .namePrice span {
+    font-size: 1rem;
+  }
+}
+
+/* ========================================
+   Vehicle Detail Styles
+   ======================================== */
+
+.vehicle-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.vehicle-detail .vehicle-image {
+  flex: 1;
+  text-align: center;
+}
+
+.vehicle-detail .vehicle-image img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+.vehicle-detail .vehicle-info {
+  flex: 1;
+}
+
+.vehicle-detail .vehicle-info h2 {
+  font-size: 2rem;
+  color: #1a237e;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.vehicle-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.price-value {
+  color: #4CAF50;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-specs {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.vehicle-specs p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.vehicle-specs strong {
+  color: #1a237e;
+  font-weight: bold;
+  min-width: 100px;
+  display: inline-block;
+}
+
+.vehicle-description {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.vehicle-description h3 {
+  color: #1a237e;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.vehicle-description p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+/* Desktop layout: use space under the image */
+@media screen and (min-width: 768px) {
+  .vehicle-detail {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    grid-template-areas:
+      "image info"
+      "desc  info";
+    gap: 2rem 3rem;
+    align-items: start;
+  }
+
+  .vehicle-detail .vehicle-image {
+    grid-area: image;
+    text-align: left;
+  }
+
+  .vehicle-detail .vehicle-info {
+    grid-area: info;
+  }
+
+  /* Move description under the image */
+  .vehicle-detail .vehicle-description {
+    grid-area: desc;
+    margin-top: 0;
+  }
+
+  /* Remove the extra spacing that was useful when it was inside the right column */
+  .vehicle-specs {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Slightly more breathing room on large screens */
+@media screen and (min-width: 1024px) {
+  .vehicle-detail {
+    padding: 2rem;
+  }
+
+  .vehicle-specs,
+  .vehicle-description {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Enhanced responsive for larger screens */
+@media screen and (min-width: 1024px) {
+  .vehicle-detail {
+    padding: 2rem;
+  }
+
+  .vehicle-detail .vehicle-info h2 {
+    font-size: 2.5rem;
+  }
+
+  .vehicle-price {
+    font-size: 1.8rem;
+  }
+
+  .price-value {
+    font-size: 2.3rem;
+  }
+}
+
+/* ========================================
+   Footer Styles
+   ======================================== */
+
+.error-test {
+  margin-top: 0.5rem;
+}
+
+.error-test a {
+  color: #ffcccc;
+  text-decoration: none;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.error-test a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* ========================================
+   Error Page Styles
+   ======================================== */
+
+.error-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.error-humor {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.error-humor p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  color: #495057;
+}
+
+.btn-home {
+  display: inline-block;
+  background-color: #1a237e;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-home:hover {
+  background-color: #3949ab;
+  color: white;
+  text-decoration: none;
+}
+
+/* Responsive Error Page */
+@media screen and (max-width: 768px) {
+  .error-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .error-message,
+  .error-humor {
+    padding: 1rem;
+  }
+
+  .error-humor p {
     font-size: 1rem;
   }
 }

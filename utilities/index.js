@@ -57,6 +57,50 @@ Util.buildClassificationGrid = async function (data) {
     return grid
 }
 
+/* **************************************
+* Build the vehicle detail view HTML
+* ************************************ */
+Util.buildVehicleDetailHTML = async function (vehicle) {
+    let detailHTML
+    if (vehicle) {
+        detailHTML = '<div class="vehicle-detail">'
+
+        // Image (left column)
+        detailHTML += '<div class="vehicle-image">'
+        detailHTML += '<img src="' + vehicle.inv_image
+            + '" alt="' + vehicle.inv_year + ' ' + vehicle.inv_make + ' ' + vehicle.inv_model
+            + '" />'
+        detailHTML += '</div>'
+
+        // Info (right column)
+        detailHTML += '<div class="vehicle-info">'
+        detailHTML += '<h2>' + vehicle.inv_year + ' ' + vehicle.inv_make + ' ' + vehicle.inv_model + '</h2>'
+        detailHTML += '<p class="vehicle-price">Price: <span class="price-value">$'
+            + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span></p>'
+
+        detailHTML += '<div class="vehicle-specs">'
+        detailHTML += '<p><strong>Year:</strong> ' + vehicle.inv_year + '</p>'
+        detailHTML += '<p><strong>Make:</strong> ' + vehicle.inv_make + '</p>'
+        detailHTML += '<p><strong>Model:</strong> ' + vehicle.inv_model + '</p>'
+        detailHTML += '<p><strong>Mileage:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + ' miles</p>'
+        detailHTML += '<p><strong>Color:</strong> ' + vehicle.inv_color + '</p>'
+        detailHTML += '<p><strong>Classification:</strong> ' + vehicle.classification_name + '</p>'
+        detailHTML += '</div>' // end vehicle-specs
+        detailHTML += '</div>' // end vehicle-info
+
+        // Description (moves under the image on desktop grid)
+        detailHTML += '<div class="vehicle-description">'
+        detailHTML += '<h3>Description</h3>'
+        detailHTML += '<p>' + vehicle.inv_description + '</p>'
+        detailHTML += '</div>'
+
+        detailHTML += '</div>' // end vehicle-detail
+    } else {
+        detailHTML = '<p class="notice">Sorry, no matching vehicle could be found.</p>'
+    }
+    return detailHTML
+}
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 
