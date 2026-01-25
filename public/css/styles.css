@@ -640,9 +640,10 @@ footer {
 }
 
 .price-value {
-  color: #4CAF50;
+  color: #2d7a3d;
   font-size: 2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
 }
 
 .vehicle-specs {
