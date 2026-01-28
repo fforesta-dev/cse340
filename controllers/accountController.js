@@ -37,7 +37,6 @@ async function registerAccount(req, res) {
     // Hash the password before storing
     let hashedPassword
     try {
-        // regular password and cost (salt is generated automatically)
         hashedPassword = await bcrypt.hashSync(account_password, 10)
     } catch (error) {
         req.flash("notice", 'Sorry, there was an error processing the registration.')

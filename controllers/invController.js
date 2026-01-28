@@ -83,7 +83,7 @@ invCont.addClassification = async function (req, res, next) {
     let nav = await utilities.getNav();
     const { classification_name } = req.body;
     try {
-        // Insert new classification using the model (to be implemented if not present)
+        // Insert new classification using the model
         const result = await invModel.addClassification(classification_name);
         if (result && result.rowCount > 0) {
             nav = await utilities.getNav(); // Refresh nav to show new classification

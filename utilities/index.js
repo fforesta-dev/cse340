@@ -87,7 +87,7 @@ Util.buildVehicleDetailHTML = async function (vehicle) {
         detailHTML += '<div class="vehicle-image">'
         detailHTML += '<img src="' + vehicle.inv_image
             + '" alt="' + vehicle.inv_year + ' ' + vehicle.inv_make + ' ' + vehicle.inv_model
-            + '">' // removed trailing slash
+            + '">'
         detailHTML += '</div>'
 
         // Info (right column)
@@ -103,16 +103,16 @@ Util.buildVehicleDetailHTML = async function (vehicle) {
         detailHTML += '<p><strong>Mileage:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + ' miles</p>'
         detailHTML += '<p><strong>Color:</strong> ' + vehicle.inv_color + '</p>'
         detailHTML += '<p><strong>Classification:</strong> ' + vehicle.classification_name + '</p>'
-        detailHTML += '</div>' // end vehicle-specs
-        detailHTML += '</div>' // end vehicle-info
+        detailHTML += '</div>'
+        detailHTML += '</div>'
 
-        // Description (moves under the image on desktop grid)
+        // Description
         detailHTML += '<div class="vehicle-description">'
         detailHTML += '<h3>Description</h3>'
         detailHTML += '<p>' + vehicle.inv_description + '</p>'
         detailHTML += '</div>'
 
-        detailHTML += '</div>' // end vehicle-detail
+        detailHTML += '</div>'
     } else {
         detailHTML = '<p class="notice">Sorry, no matching vehicle could be found.</p>'
     }

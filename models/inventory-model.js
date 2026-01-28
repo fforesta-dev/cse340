@@ -1,3 +1,5 @@
+const pool = require("../database/")
+
 /* ***************************
  *  Get classification by id
  * ************************** */
@@ -12,7 +14,6 @@ async function getClassificationById(classification_id) {
         console.error("getClassificationById error " + error);
     }
 }
-const pool = require("../database/")
 
 /* ***************************
  *  Add a new inventory item

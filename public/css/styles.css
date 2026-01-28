@@ -80,7 +80,6 @@
   font-size: 1rem;
 }
 
-/* Ensure login form labels are visible on dark background */
 .login-container .form-group label {
   color: #fff;
 }
@@ -443,7 +442,6 @@ nav a {
   color: #fff;
   text-decoration: none;
   display: block;
-  /* makes the whole li area clickable */
   width: 100%;
 }
 
@@ -634,7 +632,6 @@ footer {
     background: none;
   }
 
-  /* Fix mobile layout for featured vehicle */
   .hero-content h1 {
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
@@ -904,7 +901,6 @@ footer {
   }
 }
 
-/* Responsive adjustments for inventory */
 @media (max-width: 768px) {
   #inv-display {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1040,7 +1036,6 @@ footer {
   text-align: justify;
 }
 
-/* Desktop layout: use space under the image */
 @media screen and (min-width: 768px) {
   .vehicle-detail {
     display: grid;
@@ -1061,19 +1056,16 @@ footer {
     grid-area: info;
   }
 
-  /* Move description under the image */
   .vehicle-detail .vehicle-description {
     grid-area: desc;
     margin-top: 0;
   }
 
-  /* Remove the extra spacing that was useful when it was inside the right column */
   .vehicle-specs {
     margin-bottom: 2rem;
   }
 }
 
-/* Slightly more breathing room on large screens */
 @media screen and (min-width: 1024px) {
   .vehicle-detail {
     padding: 2rem;
@@ -1085,7 +1077,6 @@ footer {
   }
 }
 
-/* Enhanced responsive for larger screens */
 @media screen and (min-width: 1024px) {
   .vehicle-detail {
     padding: 2rem;

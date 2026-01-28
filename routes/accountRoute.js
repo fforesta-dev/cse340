@@ -19,7 +19,6 @@ router.post(
     utilities.handleErrors(accountController.registerAccount)
 );
 
-
 // Process the login attempt
 router.post(
     "/login",
