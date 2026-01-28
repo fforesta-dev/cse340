@@ -27,24 +27,20 @@
                                 <input type="text" id="account_firstname" name="account_firstname" required
                                     value="<%= locals.account_firstname %>">
                             </div>
-
                             <div class="form-group">
                                 <label for="account_lastname">Last name:</label>
                                 <input type="text" id="account_lastname" name="account_lastname" required
                                     value="<%= locals.account_lastname %>">
                             </div>
-
                             <div class="form-group">
                                 <label for="account_email">Email address:</label>
                                 <input type="email" id="account_email" name="account_email" required
                                     value="<%= locals.account_email %>">
                             </div>
-
                             <div class="form-group">
                                 <label for="account_password">Password:</label>
                                 <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
-                                    letter
-                                    and 1 special character</span>
+                                    letter and 1 special character</span>
                                 <div class="password-container">
                                     <input type="password" id="account_password" name="account_password" required
                                         pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
@@ -62,207 +58,13 @@
                                     </ul>
                                 </div>
                             </div>
-
                             <button type="submit" class="register-btn">Register</button>
                         </form>
                     </div>
-
-                    <style>
-                        /* Flash Message Styling */
-                        .flash {
-                            max-width: 450px;
-                            margin: 1rem auto 2rem;
-                            padding: 1rem;
-                            border-radius: 8px;
-                            font-size: 1rem;
-                            font-weight: 500;
-                            text-align: center;
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                            animation: slideIn 0.3s ease-out;
-                        }
-
-                        .flash.notice {
-                            background-color: #d4edda;
-                            color: #155724;
-                            border: 1px solid #c3e6cb;
-                            border-left: 4px solid #28a745;
-                        }
-
-                        .flash.error {
-                            background-color: #f8d7da;
-                            color: #721c24;
-                            border: 1px solid #f5c6cb;
-                            border-left: 4px solid #dc3545;
-                        }
-
-                        .flash.warning {
-                            background-color: #fff3cd;
-                            color: #856404;
-                            border: 1px solid #ffeaa7;
-                            border-left: 4px solid #ffc107;
-                        }
-
-                        .flash.info {
-                            background-color: #d1ecf1;
-                            color: #0c5460;
-                            border: 1px solid #b8daff;
-                            border-left: 4px solid #17a2b8;
-                        }
-
-                        @keyframes slideIn {
-                            from {
-                                opacity: 0;
-                                transform: translateY(-10px);
-                            }
-
-                            to {
-                                opacity: 1;
-                                transform: translateY(0);
-                            }
-                        }
-
-                        .registration-container {
-                            max-width: 450px;
-                            margin: 2rem auto;
-                            padding: 2rem;
-                            background-color: white;
-                            border: 2px solid #2c3e50;
-                            border-radius: 8px;
-                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                        }
-
-                        .registration-form {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 1.5rem;
-                        }
-
-                        .form-group {
-                            display: flex;
-                            flex-direction: column;
-                            gap: 0.5rem;
-                        }
-
-                        .form-group label {
-                            font-weight: bold;
-                            font-size: 1rem;
-                            color: #2c3e50;
-                        }
-
-                        .form-group span {
-                            font-size: 0.9rem;
-                            color: #7f8c8d;
-                            font-style: italic;
-                            margin-bottom: 0.5rem;
-                            padding: 0.5rem;
-                            background-color: #ecf0f1;
-                            border-radius: 4px;
-                            border-left: 3px solid #3498db;
-                        }
-
-                        .form-group input[type="text"],
-                        .form-group input[type="email"],
-                        .form-group input[type="password"] {
-                            padding: 0.75rem;
-                            border: 2px solid #bdc3c7;
-                            border-radius: 4px;
-                            font-size: 1rem;
-                            background-color: white;
-                            color: #2c3e50;
-                        }
-
-                        .form-group input:focus {
-                            outline: none;
-                            border-color: #3498db;
-                            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
-                        }
-
-                        .password-container {
-                            position: relative;
-                            display: flex;
-                            align-items: center;
-                        }
-
-                        .password-container input {
-                            flex: 1;
-                            padding-right: 80px;
-                        }
-
-                        .password-toggle {
-                            position: absolute;
-                            right: 10px;
-                            background: none;
-                            border: none;
-                            color: #3498db;
-                            cursor: pointer;
-                            font-size: 0.9rem;
-                            font-weight: bold;
-                            padding: 5px;
-                        }
-
-                        .password-toggle:hover {
-                            color: #2980b9;
-                        }
-
-                        .password-requirements {
-                            background-color: #ecf0f1;
-                            padding: 1rem;
-                            border-radius: 4px;
-                            border-left: 4px solid #3498db;
-                        }
-
-                        .password-requirements p {
-                            margin: 0 0 0.5rem 0;
-                            font-weight: bold;
-                            color: #2c3e50;
-                        }
-
-                        .password-requirements ul {
-                            margin: 0;
-                            padding-left: 1.2rem;
-                            color: #34495e;
-                        }
-
-                        .password-requirements li {
-                            margin-bottom: 0.25rem;
-                            font-size: 0.9rem;
-                        }
-
-                        .register-btn {
-                            padding: 0.75rem 1.5rem;
-                            background-color: #3498db;
-                            color: white;
-                            border: none;
-                            border-radius: 25px;
-                            font-size: 1rem;
-                            font-weight: bold;
-                            cursor: pointer;
-                            margin: 1rem auto 0;
-                            width: fit-content;
-                            transition: background-color 0.3s ease;
-                        }
-
-                        .register-btn:hover {
-                            background-color: #2980b9;
-                        }
-
-                        @media (max-width: 480px) {
-                            .registration-container {
-                                margin: 1rem;
-                                padding: 1.5rem;
-                            }
-
-                            .password-container input {
-                                padding-right: 70px;
-                            }
-                        }
-                    </style>
-
                     <script>
                         function togglePassword() {
                             const passwordInput = document.getElementById('account_password');
                             const toggleText = document.getElementById('toggleText');
-
                             if (passwordInput.type === 'password') {
                                 passwordInput.type = 'text';
                                 toggleText.textContent = 'Hide';

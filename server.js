@@ -81,7 +81,8 @@ app.use(async (err, req, res, next) => {
   res.status(err.status || 500).render("errors/error", {
     title: err.status || 'Server Error',
     message,
-    nav
+    nav,
+    layout: "./layouts/layout"
   })
 })
 
