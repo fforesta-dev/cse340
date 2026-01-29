@@ -7,11 +7,23 @@
             <%- include('../partials/header') %>
                 <%- include('../partials/navigation') %>
 
-                    <main>
-                        <%- body %>
-                    </main>
 
-                    <%- include('../partials/footer') %>
+                    <% if (messages('notice').length) { %>
+                        <div class="flash notice">
+                            <%= messages('notice') %>
+                        </div>
+                        <% } %>
+                            <% if (messages('error').length) { %>
+                                <div class="flash error">
+                                    <%= messages('error') %>
+                                </div>
+                                <% } %>
+
+                                    <main>
+                                        <%- body %>
+                                    </main>
+
+                                    <%- include('../partials/footer') %>
         </div>
     </body>
 
