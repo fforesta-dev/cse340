@@ -3,6 +3,45 @@ const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 
 /* ***************************
+ *  Build delete confirmation view
+ * ************************** */
+invCont.buildDeleteInventory = async function (req, res, next) {
+    const invId = parseInt(req.params.invId);
+    let nav = await utilities.getNav();
+    // Get the inventory item data
+    const itemData = await invModel.getInventoryByInvId(invId);
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+    res.render("./inventory/delete-confirm", {
+        title: "Delete " + itemName,
+        nav,
+        errors: null,
+        inv_id: itemData.inv_id,
+        inv_make: itemData.inv_make,
+        inv_model: itemData.inv_model,
+        inv_year: itemData.inv_year,
+        inv_price: itemData.inv_price
+    });
+};
+
+/* ***************************
+ *  Process inventory deletion
+ * ************************** */
+invCont.deleteInventory = async function (req, res, next) {
+    let nav = await utilities.getNav();
+    let inv_id = req.body.inv_id;
+    if (Array.isArray(inv_id)) inv_id = inv_id[0];
+    inv_id = parseInt(inv_id);
+    const deleteResult = await invModel.deleteInventory(inv_id);
+    if (deleteResult) {
+        req.flash("notice", "The inventory item was successfully deleted.");
+        res.redirect("/inv/");
+    } else {
+        req.flash("error", "Sorry, the delete failed.");
+        res.redirect(`/inv/delete/${inv_id}`);
+    }
+};
+
+/* ***************************
  *  Process add-inventory form
  * ************************** */
 invCont.addInventory = async function (req, res, next) {
@@ -35,10 +74,12 @@ invCont.addInventory = async function (req, res, next) {
         });
         if (result && result.rowCount > 0) {
             nav = await utilities.getNav();
+            const classificationSelect = await utilities.buildClassificationList();
             req.flash("notice", "New inventory item added successfully!");
             res.status(201).render("./inventory/management", {
                 title: "Inventory Management",
-                nav
+                nav,
+                classificationSelect
             });
         } else {
             req.flash("notice", "Failed to add inventory item.");
@@ -152,10 +193,12 @@ invCont.addClassification = async function (req, res, next) {
         const result = await invModel.addClassification(classification_name);
         if (result && result.rowCount > 0) {
             nav = await utilities.getNav(); // Refresh nav to show new classification
+            const classificationSelect = await utilities.buildClassificationList();
             req.flash("notice", "New classification added successfully!");
             res.status(201).render("./inventory/management", {
                 title: "Inventory Management",
-                nav
+                nav,
+                classificationSelect
             });
         } else {
             req.flash("notice", "Failed to add classification.");
