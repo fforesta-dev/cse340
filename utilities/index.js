@@ -164,3 +164,21 @@ Util.checkLogin = (req, res, next) => {
 }
 
 module.exports = Util
+/**
+ * Middleware to allow only Employee or Admin to access inventory admin routes
+ * If not authorized, delivers login view with message
+ */
+Util.checkEmployeeOrAdmin = (req, res, next) => {
+    if (res.locals.accountData && (res.locals.accountData.account_type === 'Employee' || res.locals.accountData.account_type === 'Admin')) {
+        return next();
+    }
+    let navPromise = Util.getNav();
+    Promise.resolve(navPromise).then(nav => {
+        req.flash("notice", "You must be logged in as an employee or admin to access this page.");
+        res.status(403).render("account/login", {
+            title: "Login",
+            nav,
+            errors: null
+        });
+    });
+};

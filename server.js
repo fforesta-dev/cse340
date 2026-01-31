@@ -34,9 +34,10 @@ app.use(session({
 }))
 
 // Express Messages Middleware
-app.use(require('connect-flash')())
-app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res)
+app.use(require("connect-flash")())
+
+app.use((req, res, next) => {
+  res.locals.getFlash = () => req.flash()
   next()
 })
 

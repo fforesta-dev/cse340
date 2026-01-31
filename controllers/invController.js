@@ -33,7 +33,7 @@ invCont.deleteInventory = async function (req, res, next) {
     inv_id = parseInt(inv_id);
     const deleteResult = await invModel.deleteInventory(inv_id);
     if (deleteResult) {
-        req.flash("notice", "The inventory item was successfully deleted.");
+        req.flash("success", "The inventory item was successfully deleted.");
         res.redirect("/inv/");
     } else {
         req.flash("error", "Sorry, the delete failed.");
@@ -75,14 +75,14 @@ invCont.addInventory = async function (req, res, next) {
         if (result && result.rowCount > 0) {
             nav = await utilities.getNav();
             const classificationSelect = await utilities.buildClassificationList();
-            req.flash("notice", "New inventory item added successfully!");
+            req.flash("success", "New inventory item added successfully!");
             res.status(201).render("./inventory/management", {
                 title: "Inventory Management",
                 nav,
                 classificationSelect
             });
         } else {
-            req.flash("notice", "Failed to add inventory item.");
+            req.flash("error", "Failed to add inventory item.");
             res.status(501).render("./inventory/add-inventory", {
                 title: "Add Inventory",
                 nav,
@@ -92,7 +92,7 @@ invCont.addInventory = async function (req, res, next) {
             });
         }
     } catch (error) {
-        req.flash("notice", "Error: " + error.message);
+        req.flash("error", "Error: " + error.message);
         res.status(500).render("./inventory/add-inventory", {
             title: "Add Inventory",
             nav,
@@ -142,7 +142,7 @@ invCont.updateInventory = async function (req, res, next) {
 
     if (updateResult) {
         const itemName = updateResult.inv_make + " " + updateResult.inv_model;
-        req.flash("notice", `The ${itemName} was successfully updated.`);
+        req.flash("success", `The ${itemName} was successfully updated.`);
         res.redirect("/inv/");
     } else {
         const classificationSelect = await utilities.buildClassificationList(classification_id);
@@ -194,14 +194,14 @@ invCont.addClassification = async function (req, res, next) {
         if (result && result.rowCount > 0) {
             nav = await utilities.getNav(); // Refresh nav to show new classification
             const classificationSelect = await utilities.buildClassificationList();
-            req.flash("notice", "New classification added successfully!");
+            req.flash("success", "New classification added successfully!");
             res.status(201).render("./inventory/management", {
                 title: "Inventory Management",
                 nav,
                 classificationSelect
             });
         } else {
-            req.flash("notice", "Failed to add classification.");
+            req.flash("error", "Failed to add classification.");
             res.status(501).render("./inventory/add-classification", {
                 title: "Add Classification",
                 nav,
@@ -209,7 +209,7 @@ invCont.addClassification = async function (req, res, next) {
             });
         }
     } catch (error) {
-        req.flash("notice", "Error: " + error.message);
+        req.flash("error", "Error: " + error.message);
         res.status(500).render("./inventory/add-classification", {
             title: "Add Classification",
             nav,

@@ -16,13 +16,13 @@
 
                 <!-- Error Display Section -->
                 <% if (errors) { %>
-                    <ul class="notice">
+                    <div class="notice error">
                         <% errors.array().forEach(error=> { %>
-                            <li>
+                            <div>
                                 <%= error.msg %>
-                            </li>
+                            </div>
                             <% }) %>
-                    </ul>
+                    </div>
                     <% } %>
 
                         <!-- Login Form Section -->

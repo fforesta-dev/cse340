@@ -1,12 +1,22 @@
 <h1>Account Management</h1>
-<%- messages() %>
-    <% if (typeof errors !=='undefined' && errors) { %>
-        <ul class="notice">
-            <% errors.array().forEach(error=> { %>
-                <li>
-                    <%= error.msg %>
-                </li>
-                <% }) %>
-        </ul>
-        <% } %>
-            <p>You're logged in.</p>
+
+<% if (typeof errors !=='undefined' && errors) { %>
+    <div class="notice error">
+        <% errors.array().forEach(error=> { %>
+            <div>
+                <%= error.msg %>
+            </div>
+            <% }) %>
+    </div>
+    <% } %>
+
+        <% if (locals.accountData) { %>
+            <h2>Welcome <%= locals.accountData.account_firstname %>
+            </h2>
+            <!-- Update account info link for all users -->
+            <p><a href="/account/update/<%= locals.accountData.account_id %>">Update Account Information</a></p>
+            <% if (locals.accountData.account_type==='Employee' || locals.accountData.account_type==='Admin' ) { %>
+                <h3>Inventory Management</h3>
+                <p><a href="/inv/">Go to Inventory Management</a></p>
+                <% } %>
+                    <% } %>

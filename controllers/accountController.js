@@ -41,7 +41,7 @@ async function registerAccount(req, res) {
     try {
         hashedPassword = await bcrypt.hashSync(account_password, 10)
     } catch (error) {
-        req.flash("notice", 'Sorry, there was an error processing the registration.')
+        req.flash("error", 'Sorry, there was an error processing the registration.')
         res.status(500).render("account/register", {
             title: "Registration",
             nav,
@@ -59,12 +59,12 @@ async function registerAccount(req, res) {
 
     if (regResult) {
         req.flash(
-            "notice",
+            "success",
             `Congratulations, you're registered ${account_firstname}. Please log in.`
         );
         res.redirect("/account/login");
     } else {
-        req.flash("notice", "Sorry, the registration failed.")
+        req.flash("error", "Sorry, the registration failed.")
         res.status(501).render("account/register", {
             title: "Registration",
             nav,
@@ -127,4 +127,84 @@ async function buildAccountManagement(req, res) {
     })
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement }
+
+// Deliver account update view
+async function buildAccountUpdate(req, res) {
+    let nav = await utilities.getNav();
+    const account_id = req.params.account_id;
+    const accountData = await accountModel.getAccountById(account_id);
+    res.render("account/update", {
+        title: "Update Account",
+        nav,
+        accountData
+    });
+}
+
+// Process account update (first name, last name, email)
+async function processAccountUpdate(req, res) {
+    let nav = await utilities.getNav();
+    const { account_id, account_firstname, account_lastname, account_email } = req.body;
+    const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
+    if (updateResult && updateResult.account_id) {
+        req.flash("success", "Account information updated successfully.");
+        // Get updated account data
+        const accountData = await accountModel.getAccountById(account_id);
+        res.render("account/management", {
+            title: "Account Management",
+            nav,
+            accountData
+        });
+    } else {
+        req.flash("error", "Account update failed.");
+        const accountData = await accountModel.getAccountById(account_id);
+        res.render("account/update", {
+            title: "Update Account",
+            nav,
+            accountData
+        });
+    }
+}
+
+// Process password update
+async function processPasswordUpdate(req, res) {
+    let nav = await utilities.getNav();
+    const { account_id, account_password } = req.body;
+    try {
+        const hashedPassword = await bcrypt.hash(account_password, 10);
+        const updateResult = await accountModel.updatePassword(account_id, hashedPassword);
+        if (updateResult && updateResult.account_id) {
+            req.flash("success", "Password updated successfully.")
+            const accountData = await accountModel.getAccountById(account_id);
+            res.render("account/management", {
+                title: "Account Management",
+                nav,
+                accountData
+            });
+        } else {
+            req.flash("error", "Password update failed.");
+            const accountData = await accountModel.getAccountById(account_id);
+            res.render("account/update", {
+                title: "Update Account",
+                nav,
+                accountData
+            });
+        }
+    } catch (error) {
+        req.flash("error", "Password update failed.")
+        const accountData = await accountModel.getAccountById(account_id);
+        res.render("account/update", {
+            title: "Update Account",
+            nav,
+            accountData
+        });
+    }
+}
+
+
+// Logout handler
+async function logout(req, res) {
+    res.clearCookie("jwt");
+    res.redirect("/");
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildAccountUpdate, processAccountUpdate, processPasswordUpdate, logout }
