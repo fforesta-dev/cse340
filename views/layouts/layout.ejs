@@ -7,33 +7,13 @@
             <%- include('../partials/header') %>
                 <%- include('../partials/navigation') %>
 
-                    <% const flash=(typeof getFlash==="function" ) ? getFlash() : null; %>
+                    <%- include('../partials/messages') %>
 
-                        <% if (flash) { %>
-                            <% if (flash.success && flash.success.length) { %>
-                                <div class="notice success">
-                                    <%= flash.success[0] %>
-                                </div>
-                                <% } %>
+                        <main>
+                            <%- body %>
+                        </main>
 
-                                    <% if (flash.error && flash.error.length) { %>
-                                        <div class="notice error">
-                                            <%= flash.error[0] %>
-                                        </div>
-                                        <% } %>
-
-                                            <% if (flash.notice && flash.notice.length) { %>
-                                                <div class="notice info">
-                                                    <%= flash.notice[0] %>
-                                                </div>
-                                                <% } %>
-                                                    <% } %>
-
-                                                        <main>
-                                                            <%- body %>
-                                                        </main>
-
-                                                        <%- include('../partials/footer') %>
+                        <%- include('../partials/footer') %>
         </div>
     </body>
 

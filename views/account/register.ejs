@@ -5,69 +5,69 @@
     </h1>
     <% } else { res.redirect('/') } %>
 
-            <!-- Error Display Section -->
-            <% if (errors) { %>
-                <ul class="notice">
-                    <% errors.array().forEach(error=> { %>
-                        <li>
-                            <%= error.msg %>
-                        </li>
-                        <% }) %>
-                </ul>
-                <% } %>
+        <!-- Error Display Section -->
+        <% if (errors) { %>
+            <ul class="notice">
+                <% errors.array().forEach(error=> { %>
+                    <li>
+                        <%= error.msg %>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } %>
 
-                    <!-- Registration Form Section -->
-                    <div class="registration-container">
-                        <form action="/account/register" method="post" class="registration-form">
-                            <div class="form-group">
-                                <label for="account_firstname">First name:</label>
-                                <input type="text" id="account_firstname" name="account_firstname" required
-                                    value="<%= locals.account_firstname %>">
+                <!-- Registration Form Section -->
+                <div class="registration-container">
+                    <form action="/account/register" method="post" class="registration-form">
+                        <div class="form-group">
+                            <label for="account_firstname">First name:</label>
+                            <input type="text" id="account_firstname" name="account_firstname" required
+                                value="<%= locals.account_firstname %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="account_lastname">Last name:</label>
+                            <input type="text" id="account_lastname" name="account_lastname" required
+                                value="<%= locals.account_lastname %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="account_email">Email address:</label>
+                            <input type="email" id="account_email" name="account_email" required
+                                value="<%= locals.account_email %>">
+                        </div>
+                        <div class="form-group">
+                            <label for="account_password">Password:</label>
+                            <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
+                                letter and 1 special character</span>
+                            <div class="password-container">
+                                <input type="password" id="account_password" name="account_password" required
+                                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+                                <button type="button" class="password-toggle" onclick="togglePassword()">
+                                    <span id="toggleText">Show</span>
+                                </button>
                             </div>
-                            <div class="form-group">
-                                <label for="account_lastname">Last name:</label>
-                                <input type="text" id="account_lastname" name="account_lastname" required
-                                    value="<%= locals.account_lastname %>">
+                            <div class="password-requirements">
+                                <p>Password must contain:</p>
+                                <ul>
+                                    <li>Minimum 12 characters</li>
+                                    <li>At least 1 capital letter</li>
+                                    <li>At least 1 number</li>
+                                    <li>At least 1 special character</li>
+                                </ul>
                             </div>
-                            <div class="form-group">
-                                <label for="account_email">Email address:</label>
-                                <input type="email" id="account_email" name="account_email" required
-                                    value="<%= locals.account_email %>">
-                            </div>
-                            <div class="form-group">
-                                <label for="account_password">Password:</label>
-                                <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
-                                    letter and 1 special character</span>
-                                <div class="password-container">
-                                    <input type="password" id="account_password" name="account_password" required
-                                        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
-                                    <button type="button" class="password-toggle" onclick="togglePassword()">
-                                        <span id="toggleText">Show</span>
-                                    </button>
-                                </div>
-                                <div class="password-requirements">
-                                    <p>Password must contain:</p>
-                                    <ul>
-                                        <li>Minimum 12 characters</li>
-                                        <li>At least 1 capital letter</li>
-                                        <li>At least 1 number</li>
-                                        <li>At least 1 special character</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <button type="submit" class="register-btn">Register</button>
-                        </form>
-                    </div>
-                    <script>
-                        function togglePassword() {
-                            const passwordInput = document.getElementById('account_password');
-                            const toggleText = document.getElementById('toggleText');
-                            if (passwordInput.type === 'password') {
-                                passwordInput.type = 'text';
-                                toggleText.textContent = 'Hide';
-                            } else {
-                                passwordInput.type = 'password';
-                                toggleText.textContent = 'Show';
-                            }
+                        </div>
+                        <button type="submit" class="register-btn">Register</button>
+                    </form>
+                </div>
+                <script>
+                    function togglePassword() {
+                        const passwordInput = document.getElementById('account_password');
+                        const toggleText = document.getElementById('toggleText');
+                        if (passwordInput.type === 'password') {
+                            passwordInput.type = 'text';
+                            toggleText.textContent = 'Hide';
+                        } else {
+                            passwordInput.type = 'password';
+                            toggleText.textContent = 'Show';
                         }
-                    </script>
+                    }
+                </script>

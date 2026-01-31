@@ -34,10 +34,10 @@ invCont.deleteInventory = async function (req, res, next) {
     const deleteResult = await invModel.deleteInventory(inv_id);
     if (deleteResult) {
         req.flash("success", "The inventory item was successfully deleted.");
-        res.redirect("/inv/");
+        return res.redirect("/inv/");
     } else {
         req.flash("error", "Sorry, the delete failed.");
-        res.redirect(`/inv/delete/${inv_id}`);
+        return res.redirect(`/inv/delete/${inv_id}`);
     }
 };
 
@@ -45,8 +45,6 @@ invCont.deleteInventory = async function (req, res, next) {
  *  Process add-inventory form
  * ************************** */
 invCont.addInventory = async function (req, res, next) {
-    let nav = await utilities.getNav();
-    let classificationList = await utilities.buildClassificationList(req.body.classification_id);
     const {
         classification_id,
         inv_make,
@@ -58,7 +56,8 @@ invCont.addInventory = async function (req, res, next) {
         inv_price,
         inv_miles,
         inv_color
-    } = req.body;
+    } = req.body
+
     try {
         const result = await invModel.addInventory({
             classification_id,
@@ -71,44 +70,25 @@ invCont.addInventory = async function (req, res, next) {
             inv_price,
             inv_miles,
             inv_color
-        });
+        })
+
         if (result && result.rowCount > 0) {
-            nav = await utilities.getNav();
-            const classificationSelect = await utilities.buildClassificationList();
-            req.flash("success", "New inventory item added successfully!");
-            res.status(201).render("./inventory/management", {
-                title: "Inventory Management",
-                nav,
-                classificationSelect
-            });
+            req.flash("success", "New inventory item added successfully!")
+            return res.redirect("/inv/")
         } else {
-            req.flash("error", "Failed to add inventory item.");
-            res.status(501).render("./inventory/add-inventory", {
-                title: "Add Inventory",
-                nav,
-                classificationList,
-                errors: null,
-                ...req.body
-            });
+            req.flash("error", "Failed to add inventory item.")
+            return res.redirect("/inv/add-inventory")
         }
     } catch (error) {
-        req.flash("error", "Error: " + error.message);
-        res.status(500).render("./inventory/add-inventory", {
-            title: "Add Inventory",
-            nav,
-            classificationList,
-            errors: null,
-            ...req.body
-        });
+        req.flash("error", "Error: " + error.message)
+        return res.redirect("/inv/add-inventory")
     }
-
 }
 
 /* ***************************
  *  Update Inventory Data
  * ************************** */
 invCont.updateInventory = async function (req, res, next) {
-    let nav = await utilities.getNav();
     let {
         inv_id,
         inv_make,
@@ -142,29 +122,11 @@ invCont.updateInventory = async function (req, res, next) {
 
     if (updateResult) {
         const itemName = updateResult.inv_make + " " + updateResult.inv_model;
-        req.flash("success", `The ${itemName} was successfully updated.`);
-        res.redirect("/inv/");
+        req.flash("success", `The ${itemName} was successfully updated.`)
+        return res.redirect("/inv/")
     } else {
-        const classificationSelect = await utilities.buildClassificationList(classification_id);
-        const itemName = `${inv_make} ${inv_model}`;
-        req.flash("error", "Sorry, the update failed.");
-        res.status(501).render("inventory/edit-inventory", {
-            title: "Edit " + itemName,
-            nav,
-            classificationSelect: classificationSelect,
-            errors: null,
-            inv_id,
-            inv_make,
-            inv_model,
-            inv_year,
-            inv_description,
-            inv_image,
-            inv_thumbnail,
-            inv_price,
-            inv_miles,
-            inv_color,
-            classification_id
-        });
+        req.flash("error", "Sorry, the update failed.")
+        return res.redirect(`/inv/edit/${inv_id}`)
     }
 };
 
@@ -194,27 +156,15 @@ invCont.addClassification = async function (req, res, next) {
         if (result && result.rowCount > 0) {
             nav = await utilities.getNav(); // Refresh nav to show new classification
             const classificationSelect = await utilities.buildClassificationList();
-            req.flash("success", "New classification added successfully!");
-            res.status(201).render("./inventory/management", {
-                title: "Inventory Management",
-                nav,
-                classificationSelect
-            });
+            req.flash("success", "New classification added successfully!")
+            return res.redirect("/inv/")
         } else {
-            req.flash("error", "Failed to add classification.");
-            res.status(501).render("./inventory/add-classification", {
-                title: "Add Classification",
-                nav,
-                errors: null
-            });
+            req.flash("error", "Failed to add classification.")
+            return res.redirect("/inv/add-classification")
         }
     } catch (error) {
-        req.flash("error", "Error: " + error.message);
-        res.status(500).render("./inventory/add-classification", {
-            title: "Add Classification",
-            nav,
-            errors: null
-        });
+        req.flash("error", "Error: " + error.message)
+        return res.redirect("/inv/add-classification")
     }
 }
 

@@ -146,22 +146,11 @@ async function processAccountUpdate(req, res) {
     const { account_id, account_firstname, account_lastname, account_email } = req.body;
     const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
     if (updateResult && updateResult.account_id) {
-        req.flash("success", "Account information updated successfully.");
-        // Get updated account data
-        const accountData = await accountModel.getAccountById(account_id);
-        res.render("account/management", {
-            title: "Account Management",
-            nav,
-            accountData
-        });
+        req.flash("success", "Account information updated successfully.")
+        return res.redirect("/account/")
     } else {
-        req.flash("error", "Account update failed.");
-        const accountData = await accountModel.getAccountById(account_id);
-        res.render("account/update", {
-            title: "Update Account",
-            nav,
-            accountData
-        });
+        req.flash("error", "Account update failed.")
+        return res.redirect(`/account/update/${account_id}`)
     }
 }
 
@@ -174,29 +163,14 @@ async function processPasswordUpdate(req, res) {
         const updateResult = await accountModel.updatePassword(account_id, hashedPassword);
         if (updateResult && updateResult.account_id) {
             req.flash("success", "Password updated successfully.")
-            const accountData = await accountModel.getAccountById(account_id);
-            res.render("account/management", {
-                title: "Account Management",
-                nav,
-                accountData
-            });
+            return res.redirect("/account/")
         } else {
-            req.flash("error", "Password update failed.");
-            const accountData = await accountModel.getAccountById(account_id);
-            res.render("account/update", {
-                title: "Update Account",
-                nav,
-                accountData
-            });
+            req.flash("error", "Password update failed.")
+            return res.redirect(`/account/update/${account_id}`)
         }
     } catch (error) {
         req.flash("error", "Password update failed.")
-        const accountData = await accountModel.getAccountById(account_id);
-        res.render("account/update", {
-            title: "Update Account",
-            nav,
-            accountData
-        });
+        return res.redirect(`/account/update/${account_id}`)
     }
 }
 

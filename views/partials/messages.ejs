@@ -1,0 +1,25 @@
+<% const flash=(typeof getFlash==="function" ) ? getFlash() : {}; %>
+
+    <% if (flash.success?.length) { %>
+        <div class="notice success">
+            <%= flash.success[0] %>
+        </div>
+        <% } %>
+
+            <% if (flash.error?.length) { %>
+                <div class="notice error">
+                    <%= flash.error[0] %>
+                </div>
+                <% } %>
+
+                    <% if (flash.notice?.length) { %>
+                        <div class="notice info">
+                            <%= flash.notice[0] %>
+                        </div>
+                        <% } %>
+
+                            <% if (flash.message?.length) { %>
+                                <div class="notice info">
+                                    <%= flash.message[0] %>
+                                </div>
+                                <% } %>
