@@ -39,8 +39,6 @@ async function getAccountByEmail(account_email) {
     }
 }
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail }
-
 // Get account by ID
 async function getAccountById(account_id) {
     try {
@@ -76,6 +74,11 @@ async function updatePassword(account_id, hashedPassword) {
     }
 }
 
-module.exports.getAccountById = getAccountById;
-module.exports.updateAccount = updateAccount;
-module.exports.updatePassword = updatePassword;
+module.exports = {
+    registerAccount,
+    checkExistingEmail,
+    getAccountByEmail,
+    getAccountById,
+    updateAccount,
+    updatePassword
+}

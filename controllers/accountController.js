@@ -93,7 +93,7 @@ async function accountLogin(req, res) {
     try {
         if (await bcrypt.compare(account_password, accountData.account_password)) {
             delete accountData.account_password
-            const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 * 1000 })
+            const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 })
             if (process.env.NODE_ENV === 'development') {
                 res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 })
             } else {
@@ -177,8 +177,9 @@ async function processPasswordUpdate(req, res) {
 
 // Logout handler
 async function logout(req, res) {
-    res.clearCookie("jwt");
-    res.redirect("/");
+    res.clearCookie("jwt", { path: "/" })
+    res.clearCookie("jwt", { httpOnly: true, path: "/" })
+    return res.redirect("/")
 }
 
 module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildAccountUpdate, processAccountUpdate, processPasswordUpdate, logout }

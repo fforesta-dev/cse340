@@ -111,27 +111,30 @@ validate.checkRegData = async (req, res, next) => {
     next()
 }
 
-module.exports = validate;
-
 // Validation for account update (first name, last name, email)
 validate.updateAccountRules = () => {
     return [
+        body("account_id")
+            .notEmpty()
+            .isInt()
+            .withMessage("Invalid account id."),
+
         body("account_firstname")
             .trim()
             .escape()
             .notEmpty().withMessage("Please provide a first name."),
+
         body("account_lastname")
             .trim()
             .escape()
             .notEmpty().withMessage("Please provide a last name."),
+
         body("account_email")
             .trim()
             .isEmail().withMessage("A valid email is required.")
             .normalizeEmail()
             .custom(async (account_email, { req }) => {
-                // Only check for existing email if it is being changed
                 const account_id = req.body.account_id;
-                const accountModel = require("../models/account-model");
                 const account = await accountModel.getAccountById(account_id);
                 if (account && account.account_email !== account_email) {
                     const emailExists = await accountModel.checkExistingEmail(account_email);
@@ -167,6 +170,11 @@ validate.checkUpdateAccountData = async (req, res, next) => {
 // Validation for password update
 validate.updatePasswordRules = () => {
     return [
+        body("account_id")
+            .notEmpty()
+            .isInt()
+            .withMessage("Invalid account id."),
+
         body("account_password")
             .trim()
             .notEmpty()
@@ -186,7 +194,6 @@ validate.checkUpdatePasswordData = async (req, res, next) => {
     let errors = validationResult(req);
     if (!errors.isEmpty()) {
         let nav = await utilities.getNav();
-        const accountModel = require("../models/account-model");
         const accountData = await accountModel.getAccountById(account_id);
         res.render("account/update", {
             errors,
@@ -198,3 +205,5 @@ validate.checkUpdatePasswordData = async (req, res, next) => {
     }
     next();
 };
+
+module.exports = validate;

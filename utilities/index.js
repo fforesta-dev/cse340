@@ -138,12 +138,12 @@ Util.checkJWTToken = (req, res, next) => {
             process.env.ACCESS_TOKEN_SECRET,
             function (err, accountData) {
                 if (err) {
-                    req.flash("Please log in")
+                    req.flash("notice", "Please log in.")
                     res.clearCookie("jwt")
                     return res.redirect("/account/login")
                 }
                 res.locals.accountData = accountData
-                res.locals.loggedin = 1
+                res.locals.loggedin = true
                 next()
             })
     } else {
@@ -156,29 +156,22 @@ Util.checkJWTToken = (req, res, next) => {
  * ************************************ */
 Util.checkLogin = (req, res, next) => {
     if (res.locals.loggedin) {
-        next()
-    } else {
-        req.flash("notice", "Please log in.")
-        return res.redirect("/account/login")
+        return next()
     }
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
 }
 
-module.exports = Util
 /**
  * Middleware to allow only Employee or Admin to access inventory admin routes
  * If not authorized, delivers login view with message
  */
 Util.checkEmployeeOrAdmin = (req, res, next) => {
-    if (res.locals.accountData && (res.locals.accountData.account_type === 'Employee' || res.locals.accountData.account_type === 'Admin')) {
-        return next();
-    }
-    let navPromise = Util.getNav();
-    Promise.resolve(navPromise).then(nav => {
-        req.flash("notice", "You must be logged in as an employee or admin to access this page.");
-        res.status(403).render("account/login", {
-            title: "Login",
-            nav,
-            errors: null
-        });
-    });
+    const type = res.locals.accountData?.account_type
+    if (type === "Employee" || type === "Admin") return next()
+
+    req.flash("notice", "You must be logged in as an employee or admin to access this page.")
+    return res.redirect("/account/")
 };
+
+module.exports = Util
