@@ -907,6 +907,17 @@ footer {
   color: #1f5f8b;
 }
 
+ul.notice {
+  list-style: none;
+  padding-left: 0;
+  margin: 2rem auto 1.5rem auto;
+}
+
+ul.notice li {
+  margin: 0.25rem 0;
+  padding: 0;
+}
+
 .greeting {
   font-size: 1.2rem;
   font-weight: 600;

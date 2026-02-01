@@ -105,7 +105,7 @@ invCont.updateInventory = async function (req, res, next) {
     // Sanitize possible array values
     if (Array.isArray(inv_id)) inv_id = inv_id[0];
     if (Array.isArray(classification_id)) classification_id = classification_id[0];
-    // You must implement updateInventory in your model for this to work
+
     const updateResult = await invModel.updateInventory(
         inv_id,
         inv_make,
@@ -154,7 +154,7 @@ invCont.addClassification = async function (req, res, next) {
         // Insert new classification using the model
         const result = await invModel.addClassification(classification_name);
         if (result && result.rowCount > 0) {
-            nav = await utilities.getNav(); // Refresh nav to show new classification
+            nav = await utilities.getNav();
             const classificationSelect = await utilities.buildClassificationList();
             req.flash("success", "New classification added successfully!")
             return res.redirect("/inv/")
