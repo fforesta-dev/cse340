@@ -2,11 +2,25 @@ const express = require("express")
 const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities")
-const { newInventoryRules, checkUpdateData } = require("../utilities/inventory-validation")
+const { newClassificationRules, newInventoryRules, checkInventoryData, checkClassificationData, checkUpdateData } = require("../utilities/inventory-validation")
 // Route to process add-inventory form (Employee/Admin only)
-router.post("/add-inventory", utilities.checkLogin, utilities.checkEmployeeOrAdmin, utilities.handleErrors(invController.addInventory));
+router.post(
+    "/add-inventory",
+    utilities.checkLogin,
+    utilities.checkEmployeeOrAdmin,
+    newInventoryRules(),
+    checkInventoryData,
+    utilities.handleErrors(invController.addInventory)
+);
 // Route to process add-classification form (Employee/Admin only)
-router.post("/add-classification", utilities.checkLogin, utilities.checkEmployeeOrAdmin, utilities.handleErrors(invController.addClassification));
+router.post(
+    "/add-classification",
+    utilities.checkLogin,
+    utilities.checkEmployeeOrAdmin,
+    newClassificationRules(),
+    checkClassificationData,
+    utilities.handleErrors(invController.addClassification)
+);
 // Route to build add-classification view (Employee/Admin only)
 router.get("/add-classification", utilities.checkLogin, utilities.checkEmployeeOrAdmin, utilities.handleErrors(invController.buildAddClassification));
 // Route to build inventory management view (Employee/Admin only)

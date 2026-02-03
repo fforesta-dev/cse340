@@ -73,6 +73,20 @@ async function getClassifications() {
 }
 
 /* ***************************
+ *  Get classification by name (case-insensitive)
+ * ************************** */
+async function getClassificationByName(classification_name) {
+    try {
+        const sql = "SELECT * FROM public.classification WHERE classification_name ILIKE $1";
+        const data = await pool.query(sql, [classification_name]);
+        return data.rows[0];
+    } catch (error) {
+        console.error("getClassificationByName error " + error);
+        throw error;
+    }
+}
+
+/* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
 async function getInventoryByClassificationId(classification_id) {
@@ -162,4 +176,4 @@ async function deleteInventory(inv_id) {
     }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByInvId, addClassification, addInventory, getClassificationById, updateInventory, deleteInventory }
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByInvId, addClassification, addInventory, getClassificationById, getClassificationByName, updateInventory, deleteInventory }

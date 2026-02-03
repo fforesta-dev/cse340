@@ -45,6 +45,7 @@ invCont.deleteInventory = async function (req, res, next) {
  *  Process add-inventory form
  * ************************** */
 invCont.addInventory = async function (req, res, next) {
+    let nav = await utilities.getNav();
     const {
         classification_id,
         inv_make,
@@ -77,11 +78,25 @@ invCont.addInventory = async function (req, res, next) {
             return res.redirect("/inv/")
         } else {
             req.flash("error", "Failed to add inventory item.")
-            return res.redirect("/inv/add-inventory")
+            let classificationList = await utilities.buildClassificationList(classification_id);
+            return res.render("./inventory/add-inventory", {
+                title: "Add Inventory",
+                nav,
+                classificationList,
+                errors: null,
+                ...req.body
+            })
         }
     } catch (error) {
         req.flash("error", "Error: " + error.message)
-        return res.redirect("/inv/add-inventory")
+        let classificationList = await utilities.buildClassificationList(classification_id);
+        return res.render("./inventory/add-inventory", {
+            title: "Add Inventory",
+            nav,
+            classificationList,
+            errors: null,
+            ...req.body
+        })
     }
 }
 
@@ -151,6 +166,16 @@ invCont.addClassification = async function (req, res, next) {
     let nav = await utilities.getNav();
     const { classification_name } = req.body;
     try {
+        const existing = await invModel.getClassificationByName(classification_name);
+        if (existing) {
+            req.flash("error", "Classification name already exists.")
+            return res.render("./inventory/add-classification", {
+                title: "Add Classification",
+                nav,
+                errors: null,
+                classification_name
+            })
+        }
         // Insert new classification using the model
         const result = await invModel.addClassification(classification_name);
         if (result && result.rowCount > 0) {
@@ -160,11 +185,21 @@ invCont.addClassification = async function (req, res, next) {
             return res.redirect("/inv/")
         } else {
             req.flash("error", "Failed to add classification.")
-            return res.redirect("/inv/add-classification")
+            return res.render("./inventory/add-classification", {
+                title: "Add Classification",
+                nav,
+                errors: null,
+                classification_name
+            })
         }
     } catch (error) {
         req.flash("error", "Error: " + error.message)
-        return res.redirect("/inv/add-classification")
+        return res.render("./inventory/add-classification", {
+            title: "Add Classification",
+            nav,
+            errors: null,
+            classification_name
+        })
     }
 }
 
