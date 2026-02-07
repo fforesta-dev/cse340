@@ -131,7 +131,14 @@ async function buildAccountManagement(req, res) {
 // Deliver account update view
 async function buildAccountUpdate(req, res) {
     let nav = await utilities.getNav();
-    const account_id = req.params.account_id;
+    const account_id = parseInt(req.params.account_id);
+
+    // Security check: Verify the account ID matches the logged-in user
+    if (res.locals.accountData.account_id !== account_id) {
+        req.flash("error", "Access denied. You can only update your own account.");
+        return res.redirect("/account/");
+    }
+
     const accountData = await accountModel.getAccountById(account_id);
     res.render("account/update", {
         title: "Update Account",
@@ -144,9 +151,19 @@ async function buildAccountUpdate(req, res) {
 async function processAccountUpdate(req, res) {
     let nav = await utilities.getNav();
     const { account_id, account_firstname, account_lastname, account_email } = req.body;
+
     const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email);
     if (updateResult && updateResult.account_id) {
         req.flash("success", "Account information updated successfully.")
+        // Update the JWT token with new account data
+        const accountData = await accountModel.getAccountById(account_id);
+        delete accountData.account_password;
+        const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: 3600 });
+        if (process.env.NODE_ENV === 'development') {
+            res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+        } else {
+            res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 });
+        }
         return res.redirect("/account/")
     } else {
         req.flash("error", "Account update failed.")
@@ -158,6 +175,7 @@ async function processAccountUpdate(req, res) {
 async function processPasswordUpdate(req, res) {
     let nav = await utilities.getNav();
     const { account_id, account_password } = req.body;
+
     try {
         const hashedPassword = await bcrypt.hash(account_password, 10);
         const updateResult = await accountModel.updatePassword(account_id, hashedPassword);
@@ -175,6 +193,18 @@ async function processPasswordUpdate(req, res) {
 }
 
 
+// Middleware to check account ownership
+async function checkAccountOwnership(req, res, next) {
+    const account_id = parseInt(req.body.account_id);
+
+    // Security check: Verify the account ID matches the logged-in user
+    if (res.locals.accountData.account_id !== account_id) {
+        req.flash("error", "Access denied. You can only update your own account.");
+        return res.redirect("/account/");
+    }
+    next();
+}
+
 // Logout handler
 async function logout(req, res) {
     res.clearCookie("jwt", { path: "/" })
@@ -182,4 +212,4 @@ async function logout(req, res) {
     return res.redirect("/")
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildAccountUpdate, processAccountUpdate, processPasswordUpdate, logout }
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildAccountUpdate, processAccountUpdate, processPasswordUpdate, logout, checkAccountOwnership }

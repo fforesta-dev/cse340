@@ -36,6 +36,7 @@ router.post(
 router.post(
     "/update",
     utilities.checkLogin,
+    accountController.checkAccountOwnership,
     regValidate.updateAccountRules(),
     regValidate.checkUpdateAccountData,
     utilities.handleErrors(accountController.processAccountUpdate)
@@ -45,6 +46,7 @@ router.post(
 router.post(
     "/update-password",
     utilities.checkLogin,
+    accountController.checkAccountOwnership,
     regValidate.updatePasswordRules(),
     regValidate.checkUpdatePasswordData,
     utilities.handleErrors(accountController.processPasswordUpdate)

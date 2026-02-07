@@ -11,7 +11,7 @@
         <div class="form-container">
             <form action="/inv/add-classification" method="post" onsubmit="return validateForm(event)">
                 <label for="classification_name">Classification Name:</label>
-                <input type="text" id="classification_name" name="classification_name" required pattern="^[A-Za-z0-9]+$"
+                <input type="text" id="classification_name" name="classification_name" required pattern="[A-Za-z0-9]+"
                     title="No spaces or special characters allowed."
                     value="<%= typeof classification_name !== 'undefined' ? classification_name : '' %>">
                 <div id="error-message"></div>
