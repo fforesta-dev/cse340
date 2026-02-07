@@ -1,0 +1,60 @@
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <% } else { res.locals.title="Favorites" } %>
+
+        <% if (locals.getFlash) { %>
+            <% const messages=locals.getFlash() %>
+                <% if (messages.notice) { %>
+                    <div class="flash notice">
+                        <%= messages.notice %>
+                    </div>
+                    <% } %>
+                        <% if (messages.error) { %>
+                            <div class="flash error">
+                                <%= messages.error %>
+                            </div>
+                            <% } %>
+                                <% } %>
+
+                                    <div class="favorites-container">
+                                        <%- favoritesGrid %>
+                                    </div>
+
+                                    <script>
+                                        // Client-side JavaScript for removing favorites
+                                        async function removeFavorite(inv_id) {
+                                            // Client-side validation
+                                            if (!inv_id || inv_id <= 0) {
+                                                alert('Invalid vehicle ID');
+                                                return;
+                                            }
+
+                                            if (!confirm('Are you sure you want to remove this vehicle from your favorites?')) {
+                                                return;
+                                            }
+
+                                            try {
+                                                const response = await fetch('/favorites/toggle', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify({ inv_id: inv_id })
+                                                });
+
+                                                const data = await response.json();
+
+                                                if (data.success) {
+                                                    // Reload page to show updated favorites
+                                                    window.location.reload();
+                                                } else {
+                                                    alert(data.message || 'Failed to remove favorite. Please try again.');
+                                                }
+                                            } catch (error) {
+                                                console.error('Error:', error);
+                                                alert('An error occurred. Please try again.');
+                                            }
+                                        }
+                                    </script>

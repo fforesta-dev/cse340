@@ -13,6 +13,7 @@ const app = express()
 const static = require("./routes/static")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const favoritesRoute = require("./routes/favoritesRoute")
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
 const session = require("express-session")
@@ -68,6 +69,8 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 // Account routes
 app.use("/account", accountRoute)
+// Favorites routes
+app.use("/favorites", favoritesRoute)
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({ status: 404, message: 'Sorry, we appear to have lost that page.' })

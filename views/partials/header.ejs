@@ -4,6 +4,9 @@
   </span>
   <div id="tools">
     <% if (locals.loggedin) { %>
+      <a href="/favorites/" title="My Favorites" class="favorites-link">
+        ❤️ Favorites
+      </a>
       <a href="/account/" title="Account Management">
         Welcome <%= locals.accountData?.account_firstname || "User" %>
       </a>

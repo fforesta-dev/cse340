@@ -1,5 +1,6 @@
 const invCont = {}
 const invModel = require("../models/inventory-model")
+const favoritesModel = require("../models/favorites-model")
 const utilities = require("../utilities/")
 
 /* ***************************
@@ -237,7 +238,15 @@ invCont.buildManagement = async function (req, res, next) {
 invCont.buildByClassificationId = async function (req, res, next) {
     const classification_id = req.params.classificationId;
     const data = await invModel.getInventoryByClassificationId(classification_id);
-    const grid = await utilities.buildClassificationGrid(data);
+
+    // Get user favorites if logged in
+    let userFavorites = [];
+    if (res.locals.accountData && res.locals.accountData.account_id) {
+        const favorites = await favoritesModel.getFavoritesByAccount(res.locals.accountData.account_id);
+        userFavorites = favorites.map(fav => fav.inv_id);
+    }
+
+    const grid = await utilities.buildClassificationGrid(data, userFavorites);
     let nav = await utilities.getNav();
     let className = "Classification";
     if (data && data.length > 0 && data[0].classification_name) {
@@ -265,10 +274,19 @@ invCont.buildByInvId = async function (req, res, next) {
     const vehicleHTML = await utilities.buildVehicleDetailHTML(data)
     let nav = await utilities.getNav()
     const vehicleName = `${data.inv_year} ${data.inv_make} ${data.inv_model}`
+
+    // Check if user is logged in and if vehicle is in favorites
+    let isFavorite = false
+    if (res.locals.accountData && res.locals.accountData.account_id) {
+        isFavorite = await favoritesModel.checkIfFavorite(res.locals.accountData.account_id, inv_id)
+    }
+
     res.render("./inventory/detail", {
         title: vehicleName,
         nav,
         vehicleHTML,
+        inv_id: inv_id,
+        isFavorite: isFavorite,
     })
 }
 
